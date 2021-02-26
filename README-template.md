@@ -1,18 +1,14 @@
-# Put title of your app here
+# Pup Patrol
 
-<!--- Replace <OWNER> with your Github Username and <REPOSITORY> with the name of your repository. -->
-<!--- You can find both of these in the url bar when you open your repository in github. -->
-![Workflow result](https://github.com/<OWNER>/<REPOSITORY>/workflows/Check/badge.svg)
-
+![Workflow result](https://github.com/robotsquidward/puppy-challenge/workflows/Check/badge.svg)
 
 ## :scroll: Description
-<!--- Describe your app in one or two sentences -->
 
+On the lookout for a new pup! Pup Patrol is a quick and easy way to browse available doggo's who can't wait to be adopted!
 
 ## :bulb: Motivation and Context
-<!--- Optionally point readers to interesting parts of your submission. -->
-<!--- What are you especially proud of? -->
 
+I was excited to use this dev challenge to jump back into Compose now that it hit Beta. I really enjoyed building a practice app using Compose in the alpha days and was excited to come back and see how the API has changed & stabilized.
 
 ## :camera_flash: Screenshots
 <!-- You can add more screenshots here if you like -->
