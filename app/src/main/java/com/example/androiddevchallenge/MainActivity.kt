@@ -18,12 +18,15 @@ package com.example.androiddevchallenge
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.androiddevchallenge.model.Breed
+import com.example.androiddevchallenge.model.Pup
 import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.views.PuppyCard
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +43,41 @@ class MainActivity : AppCompatActivity() {
 @Composable
 fun MyApp() {
     Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {
+                        Text(
+                            text = "\uD83D\uDC15 PUP PATROL \uD83D\uDC29",
+                            fontFamily = FontFamily.Monospace
+                        )
+                    }
+                )
+            }
+        ) {
+            PuppyCard(
+                pup = Pup(
+                    id = 1,
+                    name = "Bud",
+                    description = "Let me tell you all about this great doggo.",
+                    age = "Young",
+                    gender = "Male",
+                    size = "Small",
+                    breeds = Breed(
+                        primary = "Pug",
+                        secondary = null,
+                        mixed = false,
+                        unknown = false
+                    ),
+                    photos = HashMap<String, String>().apply {
+                        put(
+                            "small",
+                            "https://picsum.photos/300/300"
+                        )
+                    }
+                )
+            )
+        }
     }
 }
 
