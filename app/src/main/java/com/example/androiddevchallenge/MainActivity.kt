@@ -19,6 +19,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
@@ -32,6 +34,7 @@ import com.example.androiddevchallenge.model.Pup
 import com.example.androiddevchallenge.model.PupPatrolViewModel
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.views.PuppyCard
+import com.example.androiddevchallenge.views.PuppyDetails
 
 class MainActivity : AppCompatActivity() {
 
@@ -66,14 +69,18 @@ fun MyApp(pupPatrolViewModel: PupPatrolViewModel) {
                 )
             }
         ) {
-            selectedPup?.let {
-                Text("Whatever")
-            } ?: PupList(
-                pups = pupPatrolViewModel.pups,
-                onClick = { pupSelected ->
-                    pupPatrolViewModel.pupSelected(pupSelected)
+            Crossfade(targetState = selectedPup != null) { screen ->
+                if (screen) {
+                    selectedPup?.let { PuppyDetails(it) } ?: Text("No Pup...")
+                } else {
+                    PupList(
+                        pups = pupPatrolViewModel.pups,
+                        onClick = { pupSelected ->
+                            pupPatrolViewModel.pupSelected(pupSelected)
+                        }
+                    )
                 }
-            )
+            }
         }
     }
 }
