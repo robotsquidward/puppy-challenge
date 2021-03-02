@@ -17,23 +17,31 @@ package com.example.androiddevchallenge
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.androiddevchallenge.model.Breed
+import androidx.compose.ui.unit.dp
 import com.example.androiddevchallenge.model.Pup
+import com.example.androiddevchallenge.model.PupPatrolViewModel
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.views.PuppyCard
 
 class MainActivity : AppCompatActivity() {
+
+    private val viewModel: PupPatrolViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MyTheme {
-                MyApp()
+                MyApp(viewModel)
             }
         }
     }
@@ -41,7 +49,9 @@ class MainActivity : AppCompatActivity() {
 
 // Start building your app here!
 @Composable
-fun MyApp() {
+fun MyApp(pupPatrolViewModel: PupPatrolViewModel) {
+    val selectedPup: Pup? by pupPatrolViewModel.selectedPup.observeAsState()
+
     Surface(color = MaterialTheme.colors.background) {
         Scaffold(
             topBar = {
@@ -49,33 +59,35 @@ fun MyApp() {
                     title = {
                         Text(
                             text = "\uD83D\uDC15 PUP PATROL \uD83D\uDC29",
-                            fontFamily = FontFamily.Monospace
+                            fontFamily = FontFamily.Monospace,
                         )
-                    }
+                    },
+                    elevation = 8.dp
                 )
             }
         ) {
+            selectedPup?.let {
+                Text("Whatever")
+            } ?: PupList(
+                pups = pupPatrolViewModel.pups,
+                onClick = { pupSelected ->
+                    pupPatrolViewModel.pupSelected(pupSelected)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+fun PupList(
+    pups: List<Pup>,
+    onClick: (Pup) -> Unit
+) {
+    LazyColumn {
+        items(pups) { pup ->
             PuppyCard(
-                pup = Pup(
-                    id = 1,
-                    name = "Bud",
-                    description = "Let me tell you all about this great doggo.",
-                    age = "Young",
-                    gender = "Male",
-                    size = "Small",
-                    breeds = Breed(
-                        primary = "Pug",
-                        secondary = null,
-                        mixed = false,
-                        unknown = false
-                    ),
-                    photos = HashMap<String, String>().apply {
-                        put(
-                            "small",
-                            "https://picsum.photos/300/300"
-                        )
-                    }
-                )
+                pup = pup,
+                onClick = onClick
             )
         }
     }
@@ -85,7 +97,7 @@ fun MyApp() {
 @Composable
 fun LightPreview() {
     MyTheme {
-        MyApp()
+        MyApp(PupPatrolViewModel())
     }
 }
 
@@ -93,6 +105,6 @@ fun LightPreview() {
 @Composable
 fun DarkPreview() {
     MyTheme(darkTheme = true) {
-        MyApp()
+        MyApp(PupPatrolViewModel())
     }
 }

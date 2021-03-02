@@ -2,6 +2,7 @@ package com.example.androiddevchallenge.views
 
 import android.graphics.BitmapFactory
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CornerSize
@@ -28,14 +29,16 @@ import com.example.androiddevchallenge.ui.theme.typography
 
 @Composable
 fun PuppyCard(
-    pup: Pup
+    pup: Pup,
+    onClick: (Pup) -> Unit
 ) {
     Surface(color = MaterialTheme.colors.background) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            elevation = 8.dp,
+                .padding(8.dp)
+                .clickable { onClick(pup) },
+            elevation = 4.dp,
             shape = RoundedCornerShape(
                 CornerSize(16.dp),
                 CornerSize(16.dp),
@@ -43,36 +46,42 @@ fun PuppyCard(
                 CornerSize(16.dp)
             )
         ) {
-            Row(
-                verticalAlignment = Alignment.Top,
-                modifier = Modifier.padding(8.dp)
-            ) {
-                Image(
-                    bitmap = BitmapFactory.decodeStream(LocalContext.current.assets.open("puppy.png"))
-                        .asImageBitmap(),
-                    contentDescription = "Puppy Image",
-                    contentScale = ContentScale.FillBounds,
-                    alignment = Alignment.Center,
-                    modifier = Modifier
-                        .height(100.dp)
-                        .width(100.dp)
-                        .padding(8.dp)
-                        .clip(
-                            RoundedCornerShape(
-                                CornerSize(16.dp),
-                                CornerSize(16.dp),
-                                CornerSize(16.dp),
-                                CornerSize(16.dp)
-                            )
-                        ),
-                )
-                Column(
+            Column {
+                Row(
                     modifier = Modifier.padding(8.dp)
                 ) {
+                    Image(
+                        bitmap = BitmapFactory.decodeStream(LocalContext.current.assets.open("puppy.png"))
+                            .asImageBitmap(),
+                        contentDescription = "Puppy Image",
+                        contentScale = ContentScale.FillBounds,
+                        alignment = Alignment.Center,
+                        modifier = Modifier
+                            .height(100.dp)
+                            .width(100.dp)
+                            .padding(8.dp)
+                            .clip(
+                                RoundedCornerShape(
+                                    CornerSize(16.dp),
+                                    CornerSize(16.dp),
+                                    CornerSize(16.dp),
+                                    CornerSize(16.dp)
+                                )
+                            ),
+                    )
                     Text(
                         text = pup.name ?: "",
-                        style = typography.h4
+                        style = typography.h3,
+                        modifier = Modifier.padding(8.dp)
                     )
+                }
+                Column(
+                    modifier = Modifier.padding(
+                        bottom = 16.dp,
+                        start = 16.dp,
+                        end = 16.dp
+                    )
+                ) {
                     SimpleFlowRow(
                         verticalGap = 4.dp,
                         horizontalGap = 2.dp,
@@ -154,7 +163,8 @@ fun ComposablePreview() {
                         "https://picsum.photos/300/300"
                     )
                 }
-            )
+            ),
+            onClick = {}
         )
     }
 }
